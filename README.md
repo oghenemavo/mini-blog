@@ -60,6 +60,8 @@ The API is protected by **Sanctum Bearer tokens** for write operations, while re
 **Public (no authentication required)**  
 | Method | Endpoint            | Description                |
 |--------|---------------------|----------------------------|
+| POST    | `/api/register`    | Create Account             |
+| POST    | `/api/login`       | Login                      |
 | GET    | `/api/posts`        | List all posts (paginated) |
 | GET    | `/api/posts/{id}`   | Show a single post         |
 
@@ -88,8 +90,7 @@ Authorization: Bearer YOUR_TOKEN_HERE
 **Protected (requires Bearer token input in form)**  
 | Route                | Description                  |
 |----------------------|------------------------------|
-| GET `/posts/create`  | Form to create a post        |
-| GET `/posts/{id}/edit` | Form to edit a post        |
+| GET `/new`  | Form to create a post        |
 
 ---
 
