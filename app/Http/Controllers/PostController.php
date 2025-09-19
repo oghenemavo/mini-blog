@@ -15,8 +15,18 @@ class PostController extends BaseController
 {
     public function __construct()
     {
-        // Apply Sanctum authentication to all methods EXCEPT 'index' and 'show'
         $this->middleware('auth:sanctum')->except(['index', 'show']);
+    }
+
+    public function search(Request $request)
+    {
+        $searched = Post::search($request->get('query'))->get();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'searched successfully',
+            'data' => $searched
+        ]);
     }
 
     /**
@@ -24,7 +34,7 @@ class PostController extends BaseController
      */
     public function index()
     {
-        $posts = Post::get();
+        $posts = Post::paginate();
         return response()->json([
             'status' => true,
             'message' => 'fetched posts successfully',
