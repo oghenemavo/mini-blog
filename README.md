@@ -9,8 +9,8 @@ The API is protected by **Sanctum Bearer tokens** for write operations, while re
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/laravel-blog-api.git
-   cd laravel-blog-api
+   git clone https://github.com/oghenemavo/mini-blog.git
+   cd mini-blog
    ```
 
 2. **Install dependencies**
