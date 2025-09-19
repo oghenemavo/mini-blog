@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Routing\Controller as BaseController;
 
-class PostController extends Controller
+class PostController extends BaseController
 {
+    public function __construct()
+    {
+        // Apply Sanctum authentication to all methods EXCEPT 'index' and 'show'
+        $this->middleware('auth:sanctum')->except(['index', 'show']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -28,7 +37,12 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        Post::create($request->validated());
+        Gate::authorize('create', Post::class);
+
+        $data = $request->validated();
+        $data['user_id'] = auth()->user()->id;
+
+        Post::create($data);
         return response()->json([
             'status' => true,
             'message' => 'post created successfully',
@@ -52,6 +66,8 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
+        Gate::authorize('update', $post);
+
         $post->update($request->validated());
         return response()->json([
             'status' => true,
@@ -64,6 +80,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        Gate::authorize('delete', $post);
+
         $post->delete();
         return response()->json([
             'status' => true,
