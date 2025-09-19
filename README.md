@@ -1,61 +1,113 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel 12 Blog API + Frontend (MVC + jQuery)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This project combines a **Laravel 12 API** (JSON responses) and a **Blade + jQuery frontend**.  
+The API is protected by **Sanctum Bearer tokens** for write operations, while read operations are public.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ⚙️ Setup Instructions
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/laravel-blog-api.git
+   cd laravel-blog-api
+   ```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+2. **Install dependencies**
+   ```bash
+   composer install
+   npm install && npm run build
+   ```
 
-## Learning Laravel
+3. **Copy environment file**
+   ```bash
+   cp .env.example .env
+   ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+4. **Generate application key**
+   ```bash
+   php artisan key:generate
+   ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+5. **Configure your database**  
+   Open `.env` and update:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=laravel_blog
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+6. **Run migrations**
+   ```bash
+   php artisan migrate
+   ```
 
-## Laravel Sponsors
+7. **Run the development server**
+   ```bash
+   php artisan serve
+   ```
+   Now the app is available at [http://127.0.0.1:8000](http://127.0.0.1:8000).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🌐 Routes
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 🔹 API Endpoints
 
-## Contributing
+**Public (no authentication required)**  
+| Method | Endpoint            | Description                |
+|--------|---------------------|----------------------------|
+| GET    | `/api/posts`        | List all posts (paginated) |
+| GET    | `/api/posts/{id}`   | Show a single post         |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Protected (requires Bearer Token)**  
+| Method | Endpoint            | Description                |
+|--------|---------------------|----------------------------|
+| POST   | `/api/posts`        | Create a new post          |
+| PUT    | `/api/posts/{id}`   | Update an existing post    |
+| PATCH  | `/api/posts/{id}`   | Partially update a post    |
+| DELETE | `/api/posts/{id}`   | Delete a post              |
 
-## Code of Conduct
+🔑 **Auth header example:**
+```
+Authorization: Bearer YOUR_TOKEN_HERE
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+### 🔹 Frontend (Blade Views)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Public**  
+| Route            | Description                               |
+|------------------|-------------------------------------------|
+| GET `/posts`     | Show all posts (fetched with jQuery)       |
+| GET `/posts/{id}`| Show single post details                   |
 
-## License
+**Protected (requires Bearer token input in form)**  
+| Route                | Description                  |
+|----------------------|------------------------------|
+| GET `/posts/create`  | Form to create a post        |
+| GET `/posts/{id}/edit` | Form to edit a post        |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🚀 Workflow
+
+1. Visitors can **browse posts** (`/posts`, `/posts/{id}`) publicly.  
+2. Authenticated users obtain a **Bearer token** (via Sanctum).  
+3. With the token, users can:
+   - Create posts (`/posts/create`)  
+   - Edit posts (`/posts/{id}/edit`)  
+   - Delete posts (to be added later).  
+
+---
+
+## 🛠 Tech Stack
+
+- **Laravel 12** (API + MVC in one project)  
+- **Sanctum** for API authentication  
+- **Blade** templates for frontend  
+- **jQuery** for AJAX calls  
