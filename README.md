@@ -68,7 +68,6 @@ The API is protected by **Sanctum Bearer tokens** for write operations, while re
 |--------|---------------------|----------------------------|
 | POST   | `/api/posts`        | Create a new post          |
 | PUT    | `/api/posts/{id}`   | Update an existing post    |
-| PATCH  | `/api/posts/{id}`   | Partially update a post    |
 | DELETE | `/api/posts/{id}`   | Delete a post              |
 
 🔑 **Auth header example:**
